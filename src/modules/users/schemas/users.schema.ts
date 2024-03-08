@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User, UserAddress } from '../entities/user.entity';
 import { OrderSchema } from 'src/modules/orders/schema/order.schema';
+import { ProductSchema } from 'src/modules/products/schema/product.schema';
 
 export type UserDocument = User & Document;
 
@@ -19,7 +20,12 @@ export class UserSchema implements User {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'orders' }] })
   orders?: OrderSchema[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'UserAddress' })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }] })
+  products?: ProductSchema[];
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserAddress' }],
+  })
   address?: UserAddress;
 }
 

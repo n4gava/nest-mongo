@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User, UserAddress } from './entities/user.entity';
 import { Order } from '../orders/entities/order.entity';
+import { Product } from '../products/entities/product.entity';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,7 @@ export class UsersService {
     @InjectModel(UserAddress.name)
     private userAddressModel: mongoose.Model<UserAddress>,
     @InjectModel(Order.name) private orderModel: mongoose.Model<Order>,
+    @InjectModel(Order.name) private productModel: mongoose.Model<Product>,
   ) {}
 
   async create(user: User): Promise<User> {
@@ -31,7 +33,9 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<User> {
-    const res = await this.userModel.findById(id);
+    const res = await this.userModel
+      .findById(id)
+      .populate('products', '', this.productModel);
     if (!res) throw new NotFoundException('User not found');
     return res;
   }
@@ -42,6 +46,7 @@ export class UsersService {
       '',
       this.orderModel,
     );
+    if (!res) throw new NotFoundException('User not found');
     return res;
   }
 
