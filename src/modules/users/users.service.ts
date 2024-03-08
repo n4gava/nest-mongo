@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { User } from './entities/user.entity';
+import { User, UserAddress } from './entities/user.entity';
 import { Order } from '../orders/entities/order.entity';
+import { UserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,9 +12,18 @@ export class UsersService {
     @InjectModel(User.name) private userModel: mongoose.Model<User>,
     @InjectModel('orders') private orderModel: mongoose.Model<Order>,
   ) {}
-  async create(createUserDto: User): Promise<User> {
-    const res = await this.userModel.create(createUserDto);
-    return res;
+  async create({ userAddress, ...createUserDto }: UserDto): Promise<User> {
+    if (userAddress) {
+      // const newAddress = new this.userAddressModel(userAddress);
+      // const saveAddress = await newAddress.save();
+      // const newUser = new this.userModel({
+      //   ...createUserDto,
+      //   userAddress: saveAddress._id,
+      // });
+      // return newUser.save();
+    }
+    const newUser = new this.userModel(createUserDto);
+    return newUser.save();
   }
 
   async findAll(): Promise<User[]> {

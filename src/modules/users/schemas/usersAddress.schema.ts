@@ -5,7 +5,7 @@ import { Document } from 'mongoose';
 
 export type UserAddressDocument = UserAddress & Document;
 
-@Schema({ timestamps: true })
+@Schema({ collection: 'UserAddress' })
 export class UserAddress {
   @Prop()
   street: string;
@@ -26,4 +26,5 @@ export class UserAddress {
   user: User | mongoose.Schema.Types.ObjectId;
 }
 
-export const UserAddressSchema = SchemaFactory.createForClass(UserAddress);
+export const UserAddressSchemaFactory =
+  SchemaFactory.createForClass(UserAddress);

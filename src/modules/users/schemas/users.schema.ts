@@ -5,7 +5,7 @@ import { OrderSchema } from 'src/modules/orders/schema/order.schema';
 
 export type UserDocument = HydratedDocument<typeof UserSchema>;
 
-@Schema({ timestamps: true })
+@Schema({ collection: 'users', timestamps: true })
 export class UserSchema implements User {
   @Prop({ required: true })
   name: string;
@@ -20,7 +20,7 @@ export class UserSchema implements User {
   orders?: Array<OrderSchema>;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'UserAddress' })
-  address: UserAddress | mongoose.Schema.Types.ObjectId;
+  address?: UserAddress;
 }
 
 export const UserSchemafactory = SchemaFactory.createForClass(UserSchema);
