@@ -1,5 +1,3 @@
-export class CreateUserDto {
-  readonly name: string;
-  readonly email: string;
-  readonly password: string;
-}
+import { User } from '../entities/user.entity';
+
+export class UserDto extends User {}

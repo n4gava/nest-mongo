@@ -9,15 +9,15 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/users.schema';
-import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
+import { UserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() user: CreateUserDto): Promise<User> {
+  async create(@Body() user: UserDto): Promise<User> {
     return await this.usersService.create(user);
   }
 
@@ -29,6 +29,11 @@ export class UsersController {
   @Get(':id')
   async findById(@Param('id') id: string) {
     return await this.usersService.findById(id);
+  }
+
+  @Get(':email')
+  findOneByEmail(@Param('email') email: string) {
+    return this.usersService.findOneByEmail(email);
   }
 
   @Patch(':id')
@@ -44,6 +49,6 @@ export class UsersController {
     @Param('id')
     id: string,
   ): Promise<User> {
-    return this.usersService.deleteById(id);
+    return await this.usersService.deleteById(id);
   }
 }
