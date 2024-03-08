@@ -3,14 +3,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from './entities/user.entity';
+import { Order } from '../orders/entities/order.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: mongoose.Model<User>,
+    @InjectModel('orders') private orderModel: mongoose.Model<Order>,
   ) {}
-  async create(user: User): Promise<User> {
-    const res = await this.userModel.create(user);
+  async create(createUserDto: User): Promise<User> {
+    const res = await this.userModel.create(createUserDto);
     return res;
   }
 
@@ -25,12 +27,17 @@ export class UsersService {
     return res;
   }
 
-  async findOne(id: string): Promise<User> {
-    return await this.userModel.findOne({ id });
+  async findOneByOrder(id: string): Promise<User> {
+    const res = (await this.userModel.findOne({ id })).populate(
+      'orders',
+      '',
+      this.orderModel,
+    );
+    return res;
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return await this.userModel.findOne({ email });
+    return await this.userModel.findOne({ email }).exec();
   }
 
   async updateById(id: string, updateUserDto: UpdateUserDto) {
@@ -41,6 +48,6 @@ export class UsersService {
   }
 
   async deleteById(id: string): Promise<User> {
-    return await this.userModel.findByIdAndDelete(id);
+    return await this.userModel.findByIdAndDelete(id).exec();
   }
 }

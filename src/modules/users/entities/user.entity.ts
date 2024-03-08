@@ -5,4 +5,14 @@ export class User {
   email: string;
   password: string;
   orders?: Array<Order>;
+  userAddress?: UserAddress;
+}
+
+export class UserAddress {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  user: User;
 }

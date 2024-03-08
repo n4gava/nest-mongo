@@ -7,7 +7,7 @@ export type OrderDocument = Order & Document;
 
 @Schema({ collection: 'orders', timestamps: true })
 export class OrderSchema implements Order {
-  @Prop()
+  @Prop({ required: true })
   quantity: number;
 }
 
