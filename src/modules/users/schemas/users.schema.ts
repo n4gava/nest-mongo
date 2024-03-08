@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { User, UserAddress } from '../entities/user.entity';
 import { OrderSchema } from 'src/modules/orders/schema/order.schema';
 
-export type UserDocument = HydratedDocument<typeof UserSchema>;
+export type UserDocument = User & Document;
 
-@Schema({ collection: 'users', timestamps: true })
+@Schema({ collection: User.name, timestamps: true })
 export class UserSchema implements User {
   @Prop({ required: true })
   name: string;
@@ -17,7 +17,7 @@ export class UserSchema implements User {
   password: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'orders' }] })
-  orders?: Array<OrderSchema>;
+  orders?: OrderSchema[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'UserAddress' })
   address?: UserAddress;

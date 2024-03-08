@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { Order } from 'src/modules/orders/entities/order.entity';
 
 export class User {
@@ -5,7 +6,7 @@ export class User {
   email: string;
   password: string;
   orders?: Array<Order>;
-  userAddress?: UserAddress;
+  userAddress?: UserAddress | Types.ObjectId;
 }
 
 export class UserAddress {

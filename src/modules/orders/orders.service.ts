@@ -7,7 +7,7 @@ import * as mongoose from 'mongoose';
 @Injectable()
 export class OrdersService {
   constructor(
-    @InjectModel('orders') private orderModel: mongoose.Model<Order>,
+    @InjectModel(Order.name) private orderModel: mongoose.Model<Order>,
   ) {}
 
   async create(user: Order): Promise<Order> {

@@ -4,26 +4,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User, UserAddress } from './entities/user.entity';
 import { Order } from '../orders/entities/order.entity';
-import { UserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: mongoose.Model<User>,
-    @InjectModel('orders') private orderModel: mongoose.Model<Order>,
+    @InjectModel(UserAddress.name)
+    private userAddressModel: mongoose.Model<UserAddress>,
+    @InjectModel(Order.name) private orderModel: mongoose.Model<Order>,
   ) {}
-  async create({ userAddress, ...createUserDto }: UserDto): Promise<User> {
-    if (userAddress) {
-      // const newAddress = new this.userAddressModel(userAddress);
-      // const saveAddress = await newAddress.save();
-      // const newUser = new this.userModel({
-      //   ...createUserDto,
-      //   userAddress: saveAddress._id,
-      // });
-      // return newUser.save();
+
+  async create(user: User): Promise<User> {
+    if (user.userAddress) {
+      const newUserAddress = await this.userAddressModel.create(
+        user.userAddress,
+      );
+      user.userAddress = newUserAddress._id;
     }
-    const newUser = new this.userModel(createUserDto);
-    return newUser.save();
+    const newUser = await this.userModel.create(user);
+    return newUser;
   }
 
   async findAll(): Promise<User[]> {
