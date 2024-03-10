@@ -6,6 +6,7 @@ import { OrderSchemaFactory } from '../orders/schema/order.schema';
 import { User, UserAddress } from './entities/user.entity';
 import { UserAddressSchemaFactory } from './schemas/usersAddress.schema';
 import { Order } from '../orders/entities/order.entity';
+import { SessionContext } from 'src/shared/cls/session.cls';
 
 @Module({
   imports: [

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -6,6 +6,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { User } from '../users/entities/user.entity';
 import { Order } from '../orders/entities/order.entity';
+
 @Injectable()
 export class ProductsService {
   constructor(
@@ -26,6 +27,7 @@ export class ProductsService {
   }
 
   async findAll(): Promise<Product[]> {
+    //console.log("tenantId on findAll", this.tenantContext.tenantId);
     return this.productModel.find().exec();
   }
 
