@@ -1,10 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { RolesGuard } from './shared/guards/roles.guard';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  await app.listen(3001);
+    const app = await NestFactory.create(AppModule);
+    const microservice = app.connectMicroservice<MicroserviceOptions>({
+      transport: Transport.TCP,
+      options: {
+        port: 3002
+      }
+    });
+    
+    app.setGlobalPrefix('api');
+    await app.startAllMicroservices();
+    await app.listen(3001);
 }
 bootstrap();

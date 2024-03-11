@@ -7,4 +7,7 @@ import { SessionContext } from './cls/session.cls';
     providers: [SessionContext],
     exports: [SessionContext, CqrsModule],
 })
-export class DataCrazyModule {}
+export class DataCrazyModule {
+
+
+}

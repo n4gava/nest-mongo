@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { Unprotected } from './unprotected.decorator';
+import { Public } from './unprotected.decorator';
 
 @Injectable()
 export class AuthorizeGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class AuthorizeGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
-        const unprotectedRoute = this.reflector.getAllAndOverride(Unprotected, [
+        const unprotectedRoute = this.reflector.getAllAndOverride(Public, [
             context.getHandler(),
             context.getClass(),
         ]);

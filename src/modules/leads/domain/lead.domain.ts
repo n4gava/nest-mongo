@@ -1,4 +1,5 @@
 import { AggregateRoot } from "@nestjs/cqrs";
+import { LeadCreatedEvent } from "../events/lead-created.event";
 
 export class Lead extends AggregateRoot {
   constructor(
@@ -7,6 +8,7 @@ export class Lead extends AggregateRoot {
     private _phone: string,
     ) {
     super();
+    this.apply(new LeadCreatedEvent(_name));
   }
 
   tenantId: string;
